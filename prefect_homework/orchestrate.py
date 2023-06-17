@@ -12,7 +12,16 @@ from prefect import flow, task
 from prefect.context import get_run_context
 from prefect_email import EmailServerCredentials, email_send_message
 
-
+def notify_exc_by_email(exc):
+    context = get_run_context()
+    flow_run_name = context.flow_run.name
+    email_server_credentials = EmailServerCredentials.load("email-block-1")
+    email_send_message(
+        email_server_credentials=email_server_credentials,
+        subject=f"Flow run {flow_run_name!r} failed",
+        msg=f"Flow run {flow_run_name!r} failed due to {exc}.",
+        email_to=email_server_credentials.username,
+    )
 
 @task(retries=3, retry_delay_seconds=2, name='Read taxi data')
 def read_data(filename: str) -> pd.DataFrame:
@@ -119,19 +128,24 @@ def main_flow(
 ) -> None:
     """The main training pipeline"""
 
-    # MLflow settings
-    mlflow.set_tracking_uri("sqlite:///mlflow.db")
-    mlflow.set_experiment("nyc-taxi-experiment")
+    try:
+        # MLflow settings
+        mlflow.set_tracking_uri("sqlite:///mlflow.db")
+        mlflow.set_experiment("nyc-taxi-experiment")
 
-    # Load
-    df_train = read_data(train_path)
-    df_val = read_data(val_path)
+        # Load
+        df_train = read_data(train_path)
+        df_val = read_data(val_path)
 
-    # Transform
-    X_train, X_val, y_train, y_val, dv = add_features(df_train, df_val)
+        # Transform
+        X_train, X_val, y_train, y_val, dv = add_features(df_train, df_val)
 
-    # Train
-    train_best_model(X_train, X_val, y_train, y_val, dv)
+        # Train
+        train_best_model(X_train, X_val, y_train, y_val, dv)
+    
+    except Exception as exc:
+        notify_exc_by_email(exc)
+        raise
 
 
 if __name__ == "__main__":
