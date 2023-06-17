@@ -16,7 +16,7 @@ from datetime import date
 
 def notify_exc_by_email(exc):
     context = get_run_context()
-    flow_run_name = context.flow_run_id
+    flow_run_name = context.flow_run.name
     email_server_credentials = EmailServerCredentials.load("email-block-1")
     email_send_message(
         email_server_credentials=email_server_credentials,
