@@ -25,6 +25,17 @@ def notify_exc_by_email(exc):
         email_to=email_server_credentials.username,
     )
 
+@flow
+def email_send_message_flow(email_addresses: List[str]):
+    email_server_credentials = EmailServerCredentials.load("email-block-1")
+    for email_address in email_addresses:
+        subject = email_send_message.with_options(name=f"email {email_address}").submit(
+            email_server_credentials=email_server_credentials,
+            subject="Example Flow Notification using Gmail",
+            msg="This proves email_send_message works!",
+            email_to=email_address,
+        )
+
 @task(retries=3, retry_delay_seconds=2, name='Read taxi data')
 def read_data(filename: str) -> pd.DataFrame:
     """Read data into DataFrame"""
@@ -163,7 +174,7 @@ def main_flow(
 
         # Train
         train_best_model(X_train, X_val, y_train, y_val, dv)
-
+        email_send_message_flow(["nonso@powerlabstech.com"])
         # send email as successful
         # notify_exc_by_email(exc="PSYCHE! IT DID NOT FAIL")
     
