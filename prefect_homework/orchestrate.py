@@ -9,6 +9,9 @@ from sklearn.metrics import mean_squared_error
 import mlflow
 import xgboost as xgb
 from prefect import flow, task
+from prefect.context import get_run_context
+from prefect_email import EmailServerCredentials, email_send_message
+
 
 
 @task(retries=3, retry_delay_seconds=2, name='Read taxi data')
