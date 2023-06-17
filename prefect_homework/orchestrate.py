@@ -12,7 +12,7 @@ from prefect import flow, task
 from prefect.context import get_run_context
 from prefect_email import EmailServerCredentials, email_send_message
 
-@task(retries=2, retry_delay_seconds=5)
+@task(retries=1, retry_delay_seconds=5)
 def notify_exc_by_email(exc):
     context = get_run_context()
     flow_run_name = context.flow_run_id
