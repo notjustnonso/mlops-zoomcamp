@@ -6,7 +6,6 @@ deployments:
   schedule:
     cron: 5 * * * *
     timezone: America/Chicago
-  flow_name: main-flow
   entrypoint: prefect_homework/orchestrate.py:main_flow
   parameters: {}
   work_pool:
