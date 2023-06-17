@@ -26,7 +26,7 @@ def notify_exc_by_email(exc):
     )
 
 @flow
-def email_send_message_flow(email_addresses: List[str]):
+def email_send_message_flow(email_addresses: list[str]):
     email_server_credentials = EmailServerCredentials.load("email-block-1")
     for email_address in email_addresses:
         subject = email_send_message.with_options(name=f"email {email_address}").submit(
