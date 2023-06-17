@@ -111,8 +111,8 @@ def train_best_model(
 
 @flow
 def main_flow(
-    train_path: str = "~/Desktop/MLOps/homework/mlops-zoomcamp/prefect_homework/data/green_tripdata_2022-01.parquet",
-    val_path: str = "~/Desktop/MLOps/homework/mlops-zoomcamp/prefect_homework/data/green_tripdata_2022-02.parquet",
+    train_path: str = "~/Desktop/MLOps/homework/mlops-zoomcamp/prefect_homework/data/green_tripdata_2023-01.parquet",
+    val_path: str = "~/Desktop/MLOps/homework/mlops-zoomcamp/prefect_homework/data/green_tripdata_2023-02.parquet",
 ) -> None:
     """The main training pipeline"""
 
