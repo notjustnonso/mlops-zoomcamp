@@ -15,7 +15,7 @@ from prefect_email import EmailServerCredentials, email_send_message
 @task(retries=2, retry_delay_seconds=5)
 def notify_exc_by_email(exc):
     context = get_run_context()
-    flow_run_name = context.flow_run.name
+    flow_run_name = context.flow_run_id
     email_server_credentials = EmailServerCredentials.load("email-block-1")
     email_send_message(
         email_server_credentials=email_server_credentials,
