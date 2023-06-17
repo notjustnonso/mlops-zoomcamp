@@ -1,13 +1,14 @@
 deployments:
-- name: null
+- name: cron-deploy
   version: null
-  tags: []
-  description: null
-  schedule: {}
-  flow_name: null
-  entrypoint: null
+  tags: ["dev"]
+  description: "trigger deployment on schedule"
+  schedule:
+    cron: 5 * * * *
+    timezone: America/Chicago
+  flow_name: main-flow
+  entrypoint: prefect_homework/orchestrate.py:main_flow
   parameters: {}
   work_pool:
-    name: null
+    name: deadpool
     work_queue_name: null
-    job_variables: {}
