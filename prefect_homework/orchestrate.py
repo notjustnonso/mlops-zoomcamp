@@ -144,7 +144,7 @@ def main_flow(
         train_best_model(X_train, X_val, y_train, y_val, dv)
 
         # send email as successful
-        notify_exc_by_email(exc="PSYCHE! IT DID NOT FAIL")
+        # notify_exc_by_email(exc="PSYCHE! IT DID NOT FAIL")
     
     except Exception as exc:
         notify_exc_by_email(exc)
